@@ -1,69 +1,96 @@
-# Ex19 Palindrome Check Using Deque
+# Ex20 Sorting an Array using Merge Sort Algorithm
 ## DATE: 11/03/26
 ## AIM:
-To design a program that checks whether a given message is a palindrome by removing all non-alphanumeric characters, converting all characters to lowercase, and using a deque data structure for comparison.
-
+To design a program that sorts a given array of integers in ascending order without using built-in sorting functions, achieving O(n log n) time complexity and minimal space usage.
 ## Algorithm
 1. Start the program.
-2. Read the input string message.
-3. Convert the string to lowercase.
-4. Remove all non-alphanumeric characters using a regular expression.
-5. Create an empty Deque (double-ended queue).
-6. For each character c in the cleaned string.
-7. While the deque contains more than one character.
-8. If all pairs matched (or string has 0/1 character), return true.
-9. If return value is true → print "Palindrome" , Otherwise → print "Not a palindrome".
+2. Read integer n.
+3. Create an array nums of size n.
+4. Read n integers from the user and store them into nums.
+5. Call the function sortArray(nums).
+6. Call heapSort(nums).
+7. Return the sorted array.
+8. Build Max Heap.
+9. Extract Elements One by One.
 10. End the program.
 
 ## Program:
 ```
 /*
-Program to checks whether a given message is a palindrome by removing all non-alphanumeric characters.
+Program tosorts a given array of integers in ascending order without using built-in sorting functions
 Developed by: PAVITHRA D
 RegisterNumber: 212223230146 
 */
 
 import java.util.*;
-
-public class PalindromeChecker {
+public class Solution {
     
-    public static boolean isPalindrome(String message) {
-        message = message.toLowerCase().replaceAll("[^a-z0-9]", "");
-        
-        Deque<Character> deque = new ArrayDeque<>();
-        for (char c : message.toCharArray()) {
-            deque.addLast(c);
+    private void swap(int[] arr, int index1, int index2) {
+        int temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
+    }
+    private void heapify(int[] arr, int n, int i) {
+        int largest = i; 
+        int left = 2 * i + 1;
+        int right = 2 * i + 2; 
+
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
         }
-        while (deque.size() > 1) {
-            if (deque.pollFirst() != deque.pollLast()) {
-                return false;  // Mismatch found
-            }
+
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
         }
-        
-        return true; 
+
+        if (largest != i) {
+            swap(arr, i, largest); 
+            heapify(arr, n, largest);
+        }
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        //System.out.println("Enter a message:");
-        String input = scanner.nextLine();
-
-        if (isPalindrome(input)) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a palindrome");
+    private void heapSort(int[] arr) {
+        int n = arr.length;
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(arr, n, i);
         }
 
-        scanner.close();
+        for (int i = n - 1; i >= 0; i--) {
+            swap(arr, 0, i);
+            heapify(arr, i, 0);
+        }
+    }
+
+    public int[] sortArray(int[] nums) {
+        heapSort(nums);
+        return nums;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Solution solution = new Solution();
+
+        //System.out.println("Enter number of elements:");
+        int n = sc.nextInt();
+        
+        int[] nums = new int[n];
+        //System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            nums[i] = sc.nextInt();
+        }
+
+        int[] sorted = solution.sortArray(nums);
+        System.out.println("Sorted array:");
+        System.out.println(Arrays.toString(sorted));
+
+        sc.close();
     }
 }
 ```
 
 ## Output:
 
-<img width="459" height="252" alt="image" src="https://github.com/user-attachments/assets/51be7ab8-3e5b-44d1-a74d-6a63a9c2ed34" />
+<img width="620" height="297" alt="image" src="https://github.com/user-attachments/assets/a59de798-48be-4bb0-976f-fcb5bac1a2a8" />
 
 
 ## Result:
-The program successfully removes all non-alphanumeric characters, converts the text to lowercase, and uses a deque to efficiently compare characters from both ends. Hence, it determines whether the string is a palindrome.
+The program has been successfully implemented and executed.
